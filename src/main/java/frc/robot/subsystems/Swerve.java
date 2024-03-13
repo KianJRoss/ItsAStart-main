@@ -23,17 +23,20 @@ import frc.robot.Constants;
 public class Swerve extends SubsystemBase {
     private final SwerveDriveOdometry swerveOdometry;
     private final SwerveModule[] swerveMods;
-    // public final Pigeon2 gyro;
+    public final Pigeon2 gyro;
     final Field2d field = new Field2d();
 
-    public ADXRS450_Gyro gyro;
+    // public ADXRS450_Gyro gyro;
 
     public Swerve() {
-        // gyro = new Pigeon2(Constants.Swerve.PIGEON_ID);
-        // gyro.getConfigurator().apply(new Pigeon2Configuration());
-        // zeroGyro();
-        gyro = new ADXRS450_Gyro();
-        gyro.calibrate(); 
+        gyro = new Pigeon2(Constants.Swerve.PIGEON_ID);
+        gyro.getConfigurator().apply(new Pigeon2Configuration());
+        zeroGyro();
+        // gyro = new ADXRS450_Gyro();
+        // gyro.calibrate(); 
+
+        SmartDashboard.putData("Field", field);
+
         swerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.Mod0.SWERVE_MODULE_CONSTANTS),
             new SwerveModule(1, Constants.Swerve.Mod1.SWERVE_MODULE_CONSTANTS),
@@ -46,8 +49,13 @@ public class Swerve extends SubsystemBase {
          * with inverting motors.
          * See https://github.com/Team364/BaseFalconSwerve/issues/8 for more info.
          */
+
+
+         
         Timer.delay(1.0);
-        resetModulesToAbsolute();
+        for (SwerveModule module : swerveMods) {
+            module.resetToAbsolute();
+        }
 
         swerveOdometry = new SwerveDriveOdometry(
                 Constants.Swerve.SWERVE_KINEMATICS,
@@ -140,13 +148,13 @@ public class Swerve extends SubsystemBase {
         return Rotation2d.fromDegrees(getYaw());
     }
 
-    // public double getPitch() {
-    //     return gyro.getPitch().getValueAsDouble();
-    // }
+    public double getPitch() {
+        return gyro.getPitch().getValueAsDouble();
+    }
 
-    // public double getRoll() {
-    //     return gyro.getRoll().getValueAsDouble();
-    // }
+    public double getRoll() {
+        return gyro.getRoll().getValueAsDouble();
+    }
 
     public Pose2d getPose() {
         return swerveOdometry.getPoseMeters();
