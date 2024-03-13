@@ -5,12 +5,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   public Shooter() {}
-  private final PWMVictorSPX shooterMotor = new PWMVictorSPX(1);
+  private final Spark shooterMotor = new Spark(1);
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
